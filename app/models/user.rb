@@ -295,8 +295,8 @@ class User
       push_to_people comment, [comment.post.person]
     end
   end
-
-  ######### Posts and Such ###############
+  
+  ######### Retractions and Such ###############
   def retract(post)
     aspect_ids = aspects_with_post(post.id)
     aspect_ids.map! { |aspect| aspect.id.to_s }
@@ -305,6 +305,19 @@ class User
     retraction = Retraction.for(post)
     push_to_people retraction, people_in_aspects(aspects_with_post(post.id))
     retraction
+  end
+
+  def retract_comment(comment)
+    retraction = Retraction.for(comment)
+    retraction.comment_creator_signature = retraction.sign_with_key(encryption_key)
+    
+    if owns?(comment.post)
+      push_to_people retraction, people_in_aspects(aspects_with_post(comment.post.id))
+    else
+      push_to_people retraction, [comment.post.person]
+    end
+
+    retraction    
   end
 
   ########### Profile ######################

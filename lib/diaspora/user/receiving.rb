@@ -67,7 +67,6 @@ module Diaspora
           receive_request object, person
         elsif object.is_a?(Profile)
           receive_profile object, person
-
         elsif object.is_a?(Comment) 
           receive_comment object
         elsif object.is_a?(Retraction)
@@ -84,6 +83,14 @@ module Diaspora
           end
           Rails.logger.info( "the person id is #{retraction.post_id} the friend found is #{visible_person_by_id(retraction.post_id).inspect}")
           unfriended_by visible_person_by_id(retraction.post_id)
+
+        elsif retraction.type == "Comment"
+          comment = Comment.find(retraction.comment_id)
+          retraction.perform self.id
+          
+          retraction.diaspora_handle = self.diaspora_handle
+          #push_to_people retraction, people_in_aspects(aspects_with_post(retraction.post_id)) - comment.person
+          
         else
           retraction.perform self.id
           aspects = self.aspects_with_person(retraction.person)
