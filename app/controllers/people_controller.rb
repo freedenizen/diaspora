@@ -82,4 +82,23 @@ class PeopleController < ApplicationController
       redirect_to edit_person_path
     end
   end
+
+  def remote
+    account = params[:q].strip  
+    begin 
+      finger = EMWebfinger.new(account)
+    
+      finger.on_person{ |person|
+
+        if person.class == Person
+          person.socket_to_uid(id)
+
+        else
+          #failure
+        end
+      }
+    rescue Exception => e
+      flash[:error] = e.message
+    end
+  end
 end

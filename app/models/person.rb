@@ -3,11 +3,13 @@
 #   the COPYRIGHT file.
 
 require File.join(Rails.root, 'lib/hcard')
+require File.join(Rails.root, 'lib/diaspora/websocket')
 
 class Person
   include MongoMapper::Document
   include ROXML
   include Encryptor::Public
+  include Diaspora::Socketable
 
   xml_accessor :_id
   xml_accessor :diaspora_handle

@@ -2,31 +2,29 @@
 -#   licensed under the Affero General Public License version 3 or later.  See
 -#   the COPYRIGHT file.
 
-%li.message{:data=>{:guid=>post.id}}
-  = person_image_link(post.person)
+%li.message{:data=>{:guid=>object.id}}
+  = person_image_link(object.person)
 
   .content
     .from
-      = link_to post.person.real_name, post.person
+      = link_to object.person.real_name, object.person
       .aspect
         ➔
-        - if post.public?
-          = t('the_world')
+        - if object.public?
+          = t('.the_world')
         - else
-          = current_user.aspects_with_post( post.id ).join(', ')
+          = current_user.aspects_with_post( object.id ).join(', ')
 
-      - if current_user.owns?(post)
+      - if current_user.owns?(object)
         .right
-          = link_to t('delete'), object_path(post), :confirm => t('are_you_sure'), :method => :delete, :remote => true, :class => "delete"
+          = link_to t('delete'), object_path(object), :confirm => t('are_you_sure'), :method => :delete, :remote => true, :class => "delete"
 
-    = render type_partial(post), :post => post
+    = render type_partial(object), :object => object
 
     .info
-      %span.time= link_to(how_long_ago(post), object_path(post))
-      /= link_to "#{t('.show_comments')} (#{post.comments.count})", '#', :class => "show_post_comments"
+      %span.time= link_to(how_long_ago(object), object_path(object))
 
-      - if current_user.owns?(post)
+      - if current_user.owns?(object)
         .right
-          = link_to t('delete'), photo_path(post), :confirm => t('are_you_sure'), :method => :delete, :remote => true, :class => "delete"
-    /= render   "comments/comments", :post => post
+          = link_to t('delete'), photo_path(object), :confirm => t('are_you_sure'), :method => :delete, :remote => true, :class => "delete"
 

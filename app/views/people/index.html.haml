@@ -8,6 +8,10 @@
     %u= params[:q]
 
   %ul#stream
+  
+    %li#remote_person
+      i'm totally remote 
+ 
     - for person in @people
       = render 'people/person', :person => person
 

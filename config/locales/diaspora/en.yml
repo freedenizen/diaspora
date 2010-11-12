@@ -297,6 +297,7 @@ en:
           your_diaspora_username_is: "Your Diaspora username is: %{diaspora_handle}"
           contact_username: "Contact's username"
           create_request: "Create request"
+          search: "Search"
       destroy:
           success: "You are now friends."
           error: "Please select an aspect!"
